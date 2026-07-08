@@ -44,82 +44,55 @@
         .section-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; margin-bottom: 8px; }
         .empty-state { text-align: center; padding: 48px 24px; color: #94a3b8; }
         
-        /* Additional styles for the bank link form */
-        .bank-link-container {
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .bank-link-form {
-            background: white;
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-        .form-header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-        .form-header h2 {
-            color: #1a202c;
-            font-size: 1.8em;
-            margin-bottom: 10px;
-        }
-        .micro-deposit-info {
-            background: #f0fdf4;
-            border-left: 4px solid #15803d;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 0 4px 4px 0;
-        }
-        .micro-deposit-info h3 {
-            margin-bottom: 8px;
-            color: #15803d;
-        }
-        .error-message {
-            color: #dc2626;
-            font-size: 12px;
-            margin-top: 4px;
-            display: none;
-        }
-        .success-message {
-            color: #15803d;
-            font-size: 12px;
-            margin-top: 4px;
-            display: none;
-        }
+        /* Manual bank connection specific styles */
+        .manual-bank-form { max-width: 500px; margin: 0 auto; }
+        .form-header { text-align: center; margin-bottom: 24px; }
+        .form-header h2 { margin-bottom: 8px; }
+        .form-header p { color: #64748b; }
+        .form-footer { text-align: center; margin-top: 24px; }
+        .error-message { color: #ef4444; font-size: 12px; margin-top: 4px; display: none; }
+        .success-message { color: #10b981; font-size: 12px; margin-top: 4px; display: none; }
+        .required { color: #ef4444; }
     </style>
 </head>
 <body>
-    <div class="bank-link-container">
-        <div class="bank-link-form">
+    <nav>
+        <div class="brand">Cadence</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="bank-link-fallback.html">Bank Link</a>
+        </div>
+    </nav>
+    
+    <main>
+        <div class="card">
             <div class="form-header">
-                <h2>Link Your Bank Account</h2>
-                <p>Enter your bank account details to get started</p>
+                <h2>Manual Bank Connection</h2>
+                <p>Enter your bank account details to complete activation</p>
             </div>
             
-            <form id="manualBankForm">
+            <form id="manualBankForm" novalidate>
                 <div class="form-group">
-                    <label for="accountHolderName">Account Holder Name</label>
-                    <input type="text" id="accountHolderName" name="accountHolderName" class="input" required>
-                    <div class="error-message" id="accountHolderNameError">Please enter the account holder name</div>
+                    <label for="accountHolderName">Account Holder Name <span class="required">*</span></label>
+                    <input type="text" id="accountHolderName" name="accountHolderName" required>
+                    <div class="error-message" id="accountHolderNameError">Please enter your full name as it appears on your bank account</div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="routingNumber">Routing Number</label>
-                    <input type="text" id="routingNumber" name="routingNumber" class="input" placeholder="e.g., 123456789" required>
+                    <label for="routingNumber">Routing Number <span class="required">*</span></label>
+                    <input type="text" id="routingNumber" name="routingNumber" placeholder="123456789" maxlength="9" required>
                     <div class="error-message" id="routingNumberError">Please enter a valid 9-digit routing number</div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="accountNumber">Account Number</label>
-                    <input type="text" id="accountNumber" name="accountNumber" class="input" placeholder="e.g., 1234567890" required>
+                    <label for="accountNumber">Account Number <span class="required">*</span></label>
+                    <input type="text" id="accountNumber" name="accountNumber" required>
                     <div class="error-message" id="accountNumberError">Please enter your account number</div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="accountType">Account Type</label>
-                    <select id="accountType" name="accountType" class="select" required>
+                    <label for="accountType">Account Type <span class="required">*</span></label>
+                    <select id="accountType" name="accountType" required>
                         <option value="">Select an account type</option>
                         <option value="checking">Checking</option>
                         <option value="savings">Savings</option>
@@ -127,20 +100,21 @@
                     <div class="error-message" id="accountTypeError">Please select an account type</div>
                 </div>
                 
-                <div class="micro-deposit-info">
-                    <h3>Micro-Deposit Verification</h3>
-                    <p>We'll send two small deposits to your account within 1-2 business days. You'll need to verify these amounts to complete the connection.</p>
+                <div class="form-group">
+                    <p><strong>Note about verification:</strong> We'll verify your account using micro-deposits. Look for two small deposits in your account within 1-2 business days. Once you see them, come back to verify.</p>
                 </div>
                 
-                <button type="submit" class="btn btn-primary">Submit & Verify</button>
+                <div class="form-footer">
+                    <button type="submit" class="btn btn-primary">Submit for Verification</button>
+                </div>
             </form>
             
-            <div class="success-message" id="successMessage">
-                Thank you! We've received your bank details. Look for two small deposits in your account within 1-2 business days.
+            <div class="form-footer" style="margin-top: 16px;">
+                <p>Already linked your bank? <a href="index.html">Return to dashboard</a></p>
             </div>
         </div>
-    </div>
-
+    </main>
+    
     <script>
         // Basic client-side validation
         document.getElementById('manualBankForm').addEventListener('submit', function(e) {
@@ -182,23 +156,26 @@
             
             if (isValid) {
                 // In a real implementation, this would submit to a backend endpoint
-                document.getElementById('successMessage').style.display = 'block';
-                document.getElementById('manualBankForm').style.display = 'none';
-                
-                // Simulate API call delay
-                setTimeout(() => {
-                    alert('Bank account details submitted successfully!');
-                }, 500);
+                alert('Bank account details submitted successfully! We will verify your account using micro-deposits.');
+                // Reset form
+                this.reset();
             }
         });
         
-        // Add some basic routing number validation on input
-        document.getElementById('routingNumber').addEventListener('input', function() {
-            const value = this.value.replace(/\D/g, '');
-            if (value.length > 9) {
-                this.value = value.substring(0, 9);
-            } else {
-                this.value = value;
+        // Add 'Link with account number' trigger link to the page
+        // This would be integrated into the Plaid flow in a real application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create a link that could be used to trigger the manual flow
+            const triggerLink = document.createElement('a');
+            triggerLink.href = '#manual-bank-form';
+            triggerLink.textContent = 'Link with account number';
+            triggerLink.className = 'btn btn-secondary';
+            triggerLink.style.marginTop = '16px';
+            
+            // Insert the link before the form (in a real app, this would be in the Plaid flow)
+            const formHeader = document.querySelector('.form-header');
+            if (formHeader) {
+                formHeader.insertAdjacentElement('afterend', triggerLink);
             }
         });
     </script>
