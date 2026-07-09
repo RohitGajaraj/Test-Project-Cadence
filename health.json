@@ -1,8 +1,1 @@
-{
-  "status": "UP",
-  "updated_at": "2023-10-27T00:00:00Z",
-  "features": {
-    "landingPage": true,
-    "healthEndpoint": true
-  }
-}
+{"status": "UP",
