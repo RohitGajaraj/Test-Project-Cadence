@@ -13,7 +13,7 @@ jobs:
           test -f index.html
           test -f health.json
           test -f cadence.json
-      - name: Validate JSON files
-        run: |
-          python3 -c "import json; json.load(open('health.json'))"
-          python3 -c "import json; json.load(open('cadence.json'))"
+      - name: Validate health.json
+        run: python3 -c "import json; json.load(open('health.json'))"
+      - name: Validate cadence.json
+        run: python3 -c "import json; json.load(open('cadence.json'))"
