@@ -1,0 +1,19 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify required files exist
+        run: |
+          test -f index.html
+          test -f health.json
+          test -f cadence.json
+      - name: Validate JSON files
+        run: |
+          python3 -c "import json; json.load(open('health.json'))"
+          python3 -c "import json; json.load(open('cadence.json'))"

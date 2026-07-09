@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Bank Connection</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #fff; color: #1e293b; font-size: 14px; line-height: 1.5; }
+        nav { display: flex; align-items: center; gap: 12px; padding: 0 24px; height: 48px; border-bottom: 1px solid #e2e8f0; background: #fff; }
+        nav .brand { font-weight: 700; font-size: 15px; color: #4f46e5; }
+        nav .nav-links { display: flex; gap: 16px; font-size: 13px; color: #64748b; }
+        main { max-width: 900px; margin: 0 auto; padding: 32px 24px; }
+        h1 { font-size: 20px; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
+        h2 { font-size: 16px; font-weight: 600; color: #1e293b; margin-bottom: 8px; }
+        h3 { font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px; }
+        p { color: #475569; margin-bottom: 12px; }
+        .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+        .badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 9999px; font-size: 11px; font-weight: 500; }
+        .badge-blue { background: #eff6ff; color: #1d4ed8; }
+        .badge-green { background: #f0fdf4; color: #15803d; }
+        .badge-slate { background: #f1f5f9; color: #475569; }
+        .btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 7px; font-size: 13px; font-weight: 500; cursor: pointer; border: none; }
+        .btn-primary { background: #4f46e5; color: #fff; }
+        .btn-secondary { background: #f1f5f9; color: #334155; border: 1px solid #e2e8f0; }
+        .btn-sm { padding: 4px 10px; font-size: 12px; }
+        input, textarea, select { width: 100%; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 7px; font-size: 13px; color: #1e293b; background: #fff; outline: none; }
+        input:focus, textarea:focus, select:focus { border-color: #4f46e5; box-shadow: 0 0 0 2px rgba(79,70,229,0.1); }
+        label { display: block; font-size: 12px; font-weight: 500; color: #374151; margin-bottom: 4px; }
+        .form-group { margin-bottom: 16px; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th { text-align: left; padding: 8px 12px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; color: #64748b; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+        td { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; }
+        tr:last-child td { border-bottom: none; }
+        .sidebar { width: 220px; flex-shrink: 0; }
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .gap-4 { gap: 16px; }
+        .gap-2 { gap: 8px; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .text-muted { color: #94a3b8; font-size: 12px; }
+        .placeholder { color: #94a3b8; font-style: italic; }
+        .section-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; margin-bottom: 8px; }
+        .empty-state { text-align: center; padding: 48px 24px; color: #94a3b8; }
+        
+        /* Manual bank connection specific styles */
+        .manual-bank-form { max-width: 500px; margin: 0 auto; }
+        .form-header { text-align: center; margin-bottom: 24px; }
+        .form-header h2 { margin-bottom: 8px; }
+        .form-header p { color: #64748b; }
+        .form-footer { text-align: center; margin-top: 24px; }
+        .error-message { color: #ef4444; font-size: 12px; margin-top: 4px; display: none; }
+        .success-message { color: #10b981; font-size: 12px; margin-top: 4px; display: none; }
+        .required { color: #ef4444; }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="brand">Cadence</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="bank-link-fallback.html">Bank Link</a>
+        </div>
+    </nav>
+    
+    <main>
+        <div class="card">
+            <div class="form-header">
+                <h2>Manual Bank Connection</h2>
+                <p>Enter your bank account details to complete activation</p>
+            </div>
+            
+            <form id="manualBankForm" novalidate>
+                <div class="form-group">
+                    <label for="accountHolderName">Account Holder Name <span class="required">*</span></label>
+                    <input type="text" id="accountHolderName" name="accountHolderName" required>
+                    <div class="error-message" id="accountHolderNameError">Please enter your full name as it appears on your bank account</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="routingNumber">Routing Number <span class="required">*</span></label>
+                    <input type="text" id="routingNumber" name="routingNumber" placeholder="123456789" maxlength="9" required>
+                    <div class="error-message" id="routingNumberError">Please enter a valid 9-digit routing number</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="accountNumber">Account Number <span class="required">*</span></label>
+                    <input type="text" id="accountNumber" name="accountNumber" required>
+                    <div class="error-message" id="accountNumberError">Please enter your account number</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="accountType">Account Type <span class="required">*</span></label>
+                    <select id="accountType" name="accountType" required>
+                        <option value="">Select an account type</option>
+                        <option value="checking">Checking</option>
+                        <option value="savings">Savings</option>
+                    </select>
+                    <div class="error-message" id="accountTypeError">Please select an account type</div>
+                </div>
+                
+                <div class="form-group">
+                    <p><strong>Note about verification:</strong> We'll verify your account using micro-deposits. Look for two small deposits in your account within 1-2 business days. Once you see them, come back to verify.</p>
+                </div>
+                
+                <div class="form-footer">
+                    <button type="submit" class="btn btn-primary">Submit for Verification</button>
+                </div>
+            </form>
+            
+            <div class="form-footer" style="margin-top: 16px;">
+                <p>Already linked your bank? <a href="index.html">Return to dashboard</a></p>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        // Basic client-side validation
+        document.getElementById('manualBankForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Reset errors
+            document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+            
+            let isValid = true;
+            
+            // Validate account holder name
+            const accountHolderName = document.getElementById('accountHolderName').value.trim();
+            if (!accountHolderName) {
+                document.getElementById('accountHolderNameError').style.display = 'block';
+                isValid = false;
+            }
+            
+            // Validate routing number (9 digits)
+            const routingNumber = document.getElementById('routingNumber').value.trim();
+            const routingRegex = /^\d{9}$/;
+            if (!routingRegex.test(routingNumber)) {
+                document.getElementById('routingNumberError').style.display = 'block';
+                isValid = false;
+            }
+            
+            // Validate account number
+            const accountNumber = document.getElementById('accountNumber').value.trim();
+            if (!accountNumber) {
+                document.getElementById('accountNumberError').style.display = 'block';
+                isValid = false;
+            }
+            
+            // Validate account type
+            const accountType = document.getElementById('accountType').value;
+            if (!accountType) {
+                document.getElementById('accountTypeError').style.display = 'block';
+                isValid = false;
+            }
+            
+            if (isValid) {
+                // In a real implementation, this would submit to a backend endpoint
+                alert('Bank account details submitted successfully! We will verify your account using micro-deposits.');
+                // Reset form
+                this.reset();
+            }
+        });
+        
+        // Add 'Link with account number' trigger link to the page
+        // This would be integrated into the Plaid flow in a real application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create a link that could be used to trigger the manual flow
+            const triggerLink = document.createElement('a');
+            triggerLink.href = '#manual-bank-form';
+            triggerLink.textContent = 'Link with account number';
+            triggerLink.className = 'btn btn-secondary';
+            triggerLink.style.marginTop = '16px';
+            
+            // Insert the link before the form (in a real app, this would be in the Plaid flow)
+            const formHeader = document.querySelector('.form-header');
+            if (formHeader) {
+                formHeader.insertAdjacentElement('afterend', triggerLink);
+            }
+        });
+    </script>
+</body>
+</html>
