@@ -22,184 +22,150 @@
         .badge-slate { background: #f1f5f9; color: #475569; }
         .btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 7px; font-size: 13px; font-weight: 500; cursor: pointer; border: none; }
         .btn-primary { background: #4f46e5; color: #fff; }
-        .btn-secondary { background: #f1f5f9; color: #334155; border: 1px solid #e2e8f0; }
-        .btn-sm { padding: 4px 10px; font-size: 12px; }
-        input, textarea, select { width: 100%; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 7px; font-size: 13px; color: #1e293b; background: #fff; outline: none; }
-        input:focus, textarea:focus, select:focus { border-color: #4f46e5; box-shadow: 0 0 0 2px rgba(79,70,229,0.1); }
-        label { display: block; font-size: 12px; font-weight: 500; color: #374151; margin-bottom: 4px; }
+        .btn-outline { background: transparent; border: 1px solid #4f46e5; color: #4f46e5; }
         .form-group { margin-bottom: 16px; }
-        table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        th { text-align: left; padding: 8px 12px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; color: #64748b; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-        td { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; }
-        tr:last-child td { border-bottom: none; }
-        .sidebar { width: 220px; flex-shrink: 0; }
-        .flex { display: flex; }
-        .flex-col { flex-direction: column; }
-        .gap-4 { gap: 16px; }
-        .gap-2 { gap: 8px; }
-        .items-center { align-items: center; }
-        .justify-between { justify-content: space-between; }
-        .text-muted { color: #94a3b8; font-size: 12px; }
-        .placeholder { color: #94a3b8; font-style: italic; }
-        .section-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; margin-bottom: 8px; }
-        .empty-state { text-align: center; padding: 48px 24px; color: #94a3b8; }
-        
-        /* Additional styles for the bank link form */
-        .bank-link-container {
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .bank-link-form {
-            background: white;
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-        .form-header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-        .form-header h2 {
-            color: #1a202c;
-            font-size: 1.8em;
-            margin-bottom: 10px;
-        }
-        .micro-deposit-info {
-            background: #f0fdf4;
-            border-left: 4px solid #15803d;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 0 4px 4px 0;
-        }
-        .micro-deposit-info h3 {
-            margin-bottom: 8px;
-            color: #15803d;
-        }
-        .error-message {
-            color: #dc2626;
-            font-size: 12px;
-            margin-top: 4px;
-            display: none;
-        }
-        .success-message {
-            color: #15803d;
-            font-size: 12px;
-            margin-top: 4px;
-            display: none;
-        }
+        label { display: block; margin-bottom: 4px; font-weight: 500; color: #1e293b; }
+        input, select { width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; }
+        input:focus, select:focus { outline: none; border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
+        .error { color: #ef4444; font-size: 12px; margin-top: 4px; }
+        .success { color: #10b981; font-size: 12px; margin-top: 4px; }
+        .hidden { display: none; }
+        .instructions { background: #f8fafc; border-left: 4px solid #4f46e5; padding: 12px 16px; margin-bottom: 16px; }
+        @media (max-width: 768px) { main { padding: 24px 16px; } }
     </style>
 </head>
 <body>
-    <div class="bank-link-container">
-        <div class="bank-link-form">
-            <div class="form-header">
-                <h2>Link Your Bank Account</h2>
-                <p>Enter your bank account details to get started</p>
+    <nav>
+        <div class="brand">Cadence</div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/bank-link-fallback.html">Manual Link</a>
+        </div>
+    </nav>
+    
+    <main>
+        <h1>Connect Your Bank Account</h1>
+        <p>Enter your bank account details to connect manually.</p>
+        
+        <div class="card">
+            <h2>Manual Bank Connection</h2>
+            
+            <div class="instructions">
+                <p><strong>Important:</strong> Please ensure you enter your account details exactly as they appear on your bank statements.</p>
             </div>
             
             <form id="manualBankForm">
                 <div class="form-group">
                     <label for="accountHolderName">Account Holder Name</label>
-                    <input type="text" id="accountHolderName" name="accountHolderName" class="input" required>
-                    <div class="error-message" id="accountHolderNameError">Please enter the account holder name</div>
+                    <input type="text" id="accountHolderName" name="accountHolderName" required>
+                    <div class="error" id="accountHolderNameError"></div>
                 </div>
                 
                 <div class="form-group">
                     <label for="routingNumber">Routing Number</label>
-                    <input type="text" id="routingNumber" name="routingNumber" class="input" placeholder="e.g., 123456789" required>
-                    <div class="error-message" id="routingNumberError">Please enter a valid 9-digit routing number</div>
+                    <input type="text" id="routingNumber" name="routingNumber" maxlength="9" required>
+                    <div class="error" id="routingNumberError"></div>
                 </div>
                 
                 <div class="form-group">
                     <label for="accountNumber">Account Number</label>
-                    <input type="text" id="accountNumber" name="accountNumber" class="input" placeholder="e.g., 1234567890" required>
-                    <div class="error-message" id="accountNumberError">Please enter your account number</div>
+                    <input type="text" id="accountNumber" name="accountNumber" required>
+                    <div class="error" id="accountNumberError"></div>
                 </div>
                 
                 <div class="form-group">
                     <label for="accountType">Account Type</label>
-                    <select id="accountType" name="accountType" class="select" required>
-                        <option value="">Select an account type</option>
+                    <select id="accountType" name="accountType" required>
+                        <option value="">Select account type</option>
                         <option value="checking">Checking</option>
                         <option value="savings">Savings</option>
                     </select>
-                    <div class="error-message" id="accountTypeError">Please select an account type</div>
+                    <div class="error" id="accountTypeError"></div>
                 </div>
                 
-                <div class="micro-deposit-info">
-                    <h3>Micro-Deposit Verification</h3>
-                    <p>We'll send two small deposits to your account within 1-2 business days. You'll need to verify these amounts to complete the connection.</p>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Connect Account</button>
                 </div>
-                
-                <button type="submit" class="btn btn-primary">Submit & Verify</button>
             </form>
-            
-            <div class="success-message" id="successMessage">
-                Thank you! We've received your bank details. Look for two small deposits in your account within 1-2 business days.
-            </div>
         </div>
-    </div>
+        
+        <div class="card">
+            <h2>How It Works</h2>
+            <p>This manual connection method securely transmits your bank account information to our system for verification.</p>
+            <p>Your information is encrypted and protected using industry-standard security practices.</p>
+        </div>
+    </main>
 
     <script>
-        // Basic client-side validation
+        // Client-side validation
         document.getElementById('manualBankForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Reset errors
-            document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
-            
             let isValid = true;
             
-            // Validate account holder name
+            // Clear previous errors
+            const errorElements = document.querySelectorAll('.error');
+            errorElements.forEach(el => el.textContent = '');
+            
+            // Validate Account Holder Name
             const accountHolderName = document.getElementById('accountHolderName').value.trim();
             if (!accountHolderName) {
-                document.getElementById('accountHolderNameError').style.display = 'block';
+                document.getElementById('accountHolderNameError').textContent = 'Account holder name is required';
                 isValid = false;
             }
             
-            // Validate routing number (9 digits)
+            // Validate Routing Number (9 digits)
             const routingNumber = document.getElementById('routingNumber').value.trim();
-            const routingRegex = /^\d{9}$/;
-            if (!routingRegex.test(routingNumber)) {
-                document.getElementById('routingNumberError').style.display = 'block';
+            if (!routingNumber) {
+                document.getElementById('routingNumberError').textContent = 'Routing number is required';
+                isValid = false;
+            } else if (!/^[0-9]{9}$/.test(routingNumber)) {
+                document.getElementById('routingNumberError').textContent = 'Routing number must be exactly 9 digits';
                 isValid = false;
             }
             
-            // Validate account number
+            // Validate Account Number
             const accountNumber = document.getElementById('accountNumber').value.trim();
             if (!accountNumber) {
-                document.getElementById('accountNumberError').style.display = 'block';
+                document.getElementById('accountNumberError').textContent = 'Account number is required';
+                isValid = false;
+            } else if (accountNumber.length < 5 || accountNumber.length > 17) {
+                document.getElementById('accountNumberError').textContent = 'Account number must be between 5 and 17 digits';
                 isValid = false;
             }
             
-            // Validate account type
+            // Validate Account Type
             const accountType = document.getElementById('accountType').value;
             if (!accountType) {
-                document.getElementById('accountTypeError').style.display = 'block';
+                document.getElementById('accountTypeError').textContent = 'Please select an account type';
                 isValid = false;
             }
             
             if (isValid) {
-                // In a real implementation, this would submit to a backend endpoint
-                document.getElementById('successMessage').style.display = 'block';
-                document.getElementById('manualBankForm').style.display = 'none';
-                
-                // Simulate API call delay
-                setTimeout(() => {
-                    alert('Bank account details submitted successfully!');
-                }, 500);
+                // In a real implementation, this would submit to the backend
+                alert('Bank account information submitted successfully!');
+                console.log('Form data:', {
+                    accountHolderName,
+                    routingNumber,
+                    accountNumber,
+                    accountType
+                });
             }
         });
         
-        // Add some basic routing number validation on input
-        document.getElementById('routingNumber').addEventListener('input', function() {
-            const value = this.value.replace(/\D/g, '');
+        // Add input masking for routing number
+        document.getElementById('routingNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
             if (value.length > 9) {
-                this.value = value.substring(0, 9);
-            } else {
-                this.value = value;
+                value = value.substring(0, 9);
             }
+            e.target.value = value;
+        });
+        
+        // Add input masking for account number
+        document.getElementById('accountNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            e.target.value = value;
         });
     </script>
 </body>
