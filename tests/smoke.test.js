@@ -13,7 +13,14 @@ test('index.html is NOT empty', () => {
   assert.ok(indexHtml.length > 0);
 });
 
-test('VERSION file matches main.ts response (logic)', () => {
-  const version = fs.readFileSync(path.join(__dirname, '../VERSION'), 'utf8').trim();
-  assert.ok(version.length > 0);
+test('status endpoint returns valid JSON with version', async () => {
+  const response = await fetch('http://localhost:8000/status');
+  assert.strictEqual(response.status, 200);
+  
+  const contentType = response.headers.get('content-type');
+  assert.ok(contentType?.includes('application/json'), `Expected JSON content type, got ${contentType}`);
+  
+  const data = await response.json();
+  assert.ok(data.version, 'Version field is missing from response');
+  assert.ok(typeof data.version === 'string', 'Version should be a string');
 });
