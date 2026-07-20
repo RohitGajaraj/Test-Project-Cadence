@@ -12,6 +12,12 @@ Deno.serve(async (req: Request) => {
       return new Response(content, { headers: { "content-type": "application/json" } });
     }
 
+    if (url.pathname === "/status") {
+      const version = await Deno.readTextFile("./VERSION");
+      const response = JSON.stringify({ version: version.trim() });
+      return new Response(response, { headers: { "content-type": "application/json" } });
+    }
+
     if (url.pathname === "/bank-link-fallback.html") {
       const content = await Deno.readTextFile("./bank-link-fallback.html");
       return new Response(content, { headers: { "content-type": "text/html" } });
